@@ -1,0 +1,19 @@
+{
+  "name": "go",
+  "version": "1.0.0",
+  "description": "Go 예제(하이퍼레저 패브릭)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imkyle94/Go.git"
+  },
+  "author": "Kyle",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/imkyle94/Go/issues"
+  },
+  "homepage": "https://github.com/imkyle94/Go#readme"
+}
