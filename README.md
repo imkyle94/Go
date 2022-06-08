@@ -1,6 +1,6 @@
 # Go
 
-Go 예제(하이퍼레저 패브릭)
+Go 예제
 
 ### Go / TypeScript / Solidity
 
