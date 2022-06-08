@@ -43,91 +43,103 @@ String은 유니코드 단위, 즉 2byte단위입니다.
 
 포인터연산자는 C++와 같이 & 혹은 \* 을 사용하여 해당 변수의 주소를 얻어내거나 이를 반대로 Dereference 할 때 사용한다. Go 는 비록 포인터연산자를 제공하지만 포인터 산술 즉 포인터에 더하고 빼는 기능은 제공하지 않는다.
 
+```go
 var k int = 10
 var p = &k //k의 주소를 할당
 println(\*p) //p가 가리키는 주소에 있는 실제 내용을 출력
+```
 
 ### 반복문
 
+```go
 for, for range
 names := []string{"홍길동", "이순신", "강감찬"}
 
 for index, name := range names {
-println(index, name)
+	println(index, name)
 }
-
+```
 ### 함수
 
 #### Pass By Reference
 
 1. Pass By Value
-   package main
-   func main() {
-   msg := "Hello"
-   say(msg)
-   }
-
-func say(msg string) {
-println(msg)
-}
-
-2. Pass By Reference(포인터)
-3. package main
-   func main() {
-   msg := "Hello"
-   say(&msg)
-   println(msg) //변경된 메시지 출력
-   }
-
-func say(msg *string) {
-println(*msg)
-\*msg = "Changed" //메시지 변경
-}
-
-#### Variadic Function (가변인자함수)
-
-package main
-func main() {  
- say("This", "is", "a", "book")
-say("Hi")
-}
-
-func say(msg ...string) {
-for \_, s := range msg {
-println(s)
-}
-}
-
-#### 리턴값
-
-Go는 복수의 리턴값을 상정할 수 있다.
-
+```go
 package main
 
 func main() {
-count, total := sum(1, 7, 3, 5, 9)
-println(count, total)  
+	msg := "Hello"
+	say(msg)
+}
+
+func say(msg string) {
+	println(msg)
+}
+```
+
+2. Pass By Reference(포인터)
+3.
+```go
+package main
+
+func main() {
+	msg := "Hello"
+	say(&msg)
+	println(msg) //변경된 메시지 출력
+}
+
+func say(msg *string) {
+	println(*msg)
+	*msg = "Changed" //메시지 변경
+}
+```
+
+#### Variadic Function (가변인자함수)
+```go
+package main
+
+func main() {
+	say("This", "is", "a", "book")
+	say("Hi")
+}
+
+
+func say(msg ...string) {
+	for \_, s := range msg {		
+	println(s)
+	}
+}
+```
+#### 리턴값
+
+Go는 복수의 리턴값을 상정할 수 있다.
+```go
+package main
+
+func main() {
+	count, total := sum(1, 7, 3, 5, 9)
+	println(count, total)  
 }
 
 func sum(nums ...int) (int, int) {
-s := 0 // 합계
-count := 0 // 요소 갯수
-for \_, n := range nums {
-s += n
-count++
-}
-return count, s
+	s := 0 // 합계
+	count := 0 // 요소 갯수
+	for \_, n := range nums {
+		s += n
+	count++
+	}
+	return count, s
 }
 
 이렇게도 사용할 수 있음.
 func sum(nums ...int) (count int, total int) {
-for \_, n := range nums {
-total += n
+	for \_, n := range nums {
+		total += n
+	}
+	count = len(nums)
+	return
 }
-count = len(nums)
-return
-}
-
+```
 ### 일급함수
 
 Go 역시 TypeScript와 마찬가지로 함수는 일급 함수다.
@@ -136,137 +148,145 @@ Go 역시 TypeScript와 마찬가지로 함수는 일급 함수다.
 
 Closure는 함수 바깥에 있는 변수를 참조하는 함수값(function value)를 일컫는데, 이때의 함수는 바깥의 변수를 마치 함수 안으로 끌어들인 듯이 그 변수를 읽거나 쓸 수 있게 된다.
 
+```go
 package main
 
 func nextValue() func() int {
-i := 0
-return func() int {
-i++
-return i
-}
+	i := 0
+	return func() int {
+		i++
+		return i
+	}
 }
 
 func main() {
-next := nextValue()
+	next := nextValue()
 
-    println(next())  // 1
-    println(next())  // 2
-    println(next())  // 3
+	println(next()) // 1
+	println(next()) // 2
+	println(next()) // 3
 
-    anotherNext := nextValue()
-    println(anotherNext()) // 1 다시 시작
-    println(anotherNext()) // 2
-
+	anotherNext := nextValue()
+	println(anotherNext()) // 1 다시 시작
+	println(anotherNext()) // 2
 }
-
+```
 ### Array
 
 배열은 연속적인 메모리 공간에 동일한 타입의 데이타를 순서적으로 저장하는 자료구조이다.
 
+```go
 package main
 
 func main() {
-var a [3]int //정수형 3개 요소를 갖는 배열 a 선언
-a[0] = 1
-a[1] = 2
-a[2] = 3
-println(a[1]) // 2 출력
+	var a [3]int //정수형 3개 요소를 갖는 배열 a 선언
+	a[0] = 1
+	a[1] = 2
+	a[2] = 3
+	println(a[1]) // 2 출력
 }
-
+```
 ### Go Slice
 
 Go Slice 선언은 배열을 선언하듯이 "var v []T" 처럼 하는데 배열과 달리 크기는 지정하지 않는다. 예를 들어, 정수형 Slice 변수 a를 선언하기 위해서 "var a []int" 처럼 선언할 수 있다.
 
+```go
 package main
+
 import "fmt"
 
 func main() {
-var a []int //슬라이스 변수 선언
-a = []int{1, 2, 3} //슬라이스에 리터럴값 지정
-a[1] = 10
-fmt.Println(a) // [1, 10, 3]출력
+	var a []int        //슬라이스 변수 선언
+	a = []int{1, 2, 3} //슬라이스에 리터럴값 지정
+	a[1] = 10
+	fmt.Println(a) // [1, 10, 3]출력
 }
-
+```
 ### Go Map
 
 Map은 키(Key)에 대응하는 값(Value)을 신속히 찾는 해시테이블(Hash table)을 구현한 자료구조이다.
 
+```go
 package main
 
 func main() {
-var m map[int]string
+	var m map[int]string
 
-    m = make(map[int]string)
-    //추가 혹은 갱신
-    m[901] = "Apple"
-    m[134] = "Grape"
-    m[777] = "Tomato"
+	m = make(map[int]string)
+	//추가 혹은 갱신
+	m[901] = "Apple"
+	m[134] = "Grape"
+	m[777] = "Tomato"
 
-    // 키에 대한 값 읽기
-    str := m[134]
-    println(str)
+	// 키에 대한 값 읽기
+	str := m[134]
+	println(str)
 
-    noData := m[999] // 값이 없으면 nil 혹은 zero 리턴
-    println(noData)
+	noData := m[999] // 값이 없으면 nil 혹은 zero 리턴
+	println(noData)
 
-    // 삭제
-    delete(m, 777)
-
+	// 삭제
+	delete(m, 777)
 }
+```
 
+```go
 package main
 
 func main() {
-tickers := map[string]string{
-"GOOG": "Google Inc",
-"MSFT": "Microsoft",
-"FB": "FaceBook",
-"AMZN": "Amazon",
+	tickers := map[string]string{
+		"GOOG": "Google Inc",
+		"MSFT": "Microsoft",
+		"FB":   "FaceBook",
+		"AMZN": "Amazon",
+	}
+
+	// map 키 체크
+	val, exists := tickers["MSFT"]
+	if !exists {
+		println("No MSFT ticker")
+	}
 }
-
-    // map 키 체크
-    val, exists := tickers["MSFT"]
-    if !exists {
-        println("No MSFT ticker")
-    }
-
-}
-
+```
 ### Go Package
 
 Go는 패키지(Package)를 통해 코드의 모듈화, 코드의 재사용 기능을 제공한다.
 다른 패키지를 프로그램에서 사용하기 위해서는 import 를 사용하여 패키지를 포함시킨다.
 
+```go
 package main
 
 import "fmt"
 
-func main(){
-fmt.Println("Hello")
+func main() {
+	fmt.Println("Hello")
 }
-
+```
 개발자가 패키지를 작성할 때, 패키지 실행시 처음으로 호출되는 init() 함수를 작성할 수 있다.
 즉, init 함수는 패키지가 로드되면서 실행되는 함수로 별도의 호출 없이 자동으로 호출된다.
 
+```go
 package testlib
 
 var pop map[string]string
 
 func init() { // 패키지 로드시 map 초기화
-pop = make(map[string]string)
+	pop = make(map[string]string)
 }
-
+```
 경우에 따라 패키지를 import 하면서 단지 그 패키지 안의 init() 함수만을 호출하고자 하는 케이스가 있다. 이런 경우는 패키지 import 시 \_ 라는 alias 를 지정한다.
 
+```go
 package main
 import \_ "other/xlib"
-
+```
 ### Go Struct
 
 Go에서 struct는 Custom Data Type을 표현하는데 사용되는데, Go의 struct는 필드들의 집합체이며 필드들의 컨테이너이다. Go에서 struct는 필드 데이타만을 가지며, (행위를 표현하는) 메서드를 갖지 않는다.
 
 Go 언어는 객체지향 프로그래밍(Object Oriented Programming, OOP)을 고유의 방식으로 지원한다. 즉, Go에는 전통적인 OOP 언어가 가지는 클래스, 객체, 상속 개념이 없다. 전통적인 OOP의 클래스(class)는 Go 언어에서 Custom 타입을 정의하는 struct로 표현되는데, 전통적인 OOP의 클래스가 필드와 메서드를 함께 갖는 것과 달리 Go 언어의 struct는 필드만을 가지며, 메서드는 별도로 분리하여 정의한다 (Go Method 에서 설명).
 
+```go
 package main
 
 import "fmt"
@@ -292,65 +312,72 @@ p := person{}
 var p1 person
 p1 = person{"Bob", 20}
 p2 := person{name: "Sean", age: 50}
+```
 
 때로 구조체(struct)의 필드가 사용 전에 초기화되어야 하는 경우가 있다.
 생성자(constructor) 함수를 이용한다.
 
+```go
 package main
 
 type dict struct {
-data map[int]string
+	data map[int]string
 }
 
 //생성자 함수 정의
 func newDict() \*dict {
-d := dict{}
-d.data = map[int]string{}
-return &d //포인터 전달
+	d := dict{}
+	d.data = map[int]string{}
+	return &d //포인터 전달
 }
 
 func main() {
-dic := newDict() // 생성자 호출
-dic.data[1] = "A"
+	dic := newDict() // 생성자 호출
+	dic.data[1] = "A"
 }
+```
 
 ### Go Method
 
 흔히 receiver로 불리우는 이 부분은 메서드가 속한 struct 타입과 struct 변수명을 지정하는데, struct 변수명은 함수 내에서 마치 입력 파라미터처럼 사용된다.
 
+```go
 package main
 
 //Rect - struct 정의
 type Rect struct {
-width, height int
+	width, height int
 }
-
+	
 //Rect의 area() 메소드
 func (r Rect) area() int {
-return r.width \* r.height  
+	return r.width \* r.height  
 }
-
+		
 func main() {
-rect := Rect{10, 20}
-area := rect.area() //메서드 호출
-println(area)
+	rect := Rect{10, 20}
+	area := rect.area() //메서드 호출
+	println(area)
 }
+```
 
 #### Value vs 포인터 receiver
 
 Value receiver는 struct의 데이타를 복사(copy)하여 전달하며, 포인터 receiver는 struct의 포인터만을 전달한다. Value receiver의 경우 만약 메서드내에서 그 struct의 필드값이 변경되더라도 호출자의 데이타는 변경되지 않는 반면, 포인터 receiver는 메서드 내의 필드값 변경이 그대로 호출자에서 반영된다.
 
+```go
 // 포인터 Receiver
 func (r _Rect) area2() int {
-r.width++
-return r.width _ r.height
+	r.width++
+	return r.width _ r.height
 }
-
+	
 func main() {
-rect := Rect{10, 20}
-area := rect.area2() //메서드 호출
-println(rect.width, area) // 11 220 출력
+	rect := Rect{10, 20}
+	area := rect.area2() //메서드 호출
+	println(rect.width, area) // 11 220 출력
 }
+```
 
 ### Go Interface
 
@@ -359,34 +386,36 @@ interface는 타입(type)이 구현해야 하는 메서드 원형(prototype)들�
 
 인터페이스는 struct와 마찬가지로 type 문을 사용하여 정의한다.
 
+```go
 type Shape interface {
-area() float64
-perimeter() float64
+	area() float64
+	perimeter() float64
 }
 
 //Rect 정의
 type Rect struct {
-width, height float64
+	width, height float64
 }
 
 //Circle 정의
 type Circle struct {
-radius float64
+	radius float64
 }
 
 //Rect 타입에 대한 Shape 인터페이스 구현
 func (r Rect) area() float64 { return r.width _ r.height }
 func (r Rect) perimeter() float64 {
-return 2 _ (r.width + r.height)
+	return 2 _ (r.width + r.height)
 }
 
 //Circle 타입에 대한 Shape 인터페이스 구현
 func (c Circle) area() float64 {
-return math.Pi _ c.radius _ c.radius
+	return math.Pi _ c.radius _ c.radius
 }
 func (c Circle) perimeter() float64 {
-return 2 _ math.Pi _ c.radius
+	return 2 _ math.Pi _ c.radius
 }
+```
 
 Go 프로그래밍을 하다보면 흔히 빈 인터페이스(empty interface)를 자주 접하게 되는데, 흔히 인터페이스 타입(interface type)으로도 불리운다.
 빈 interface는 interface{} 와 같이 표현한다.
@@ -397,9 +426,11 @@ Empty interface는 메서드를 전혀 갖지 않는 빈 인터페이스로서, 
 
 Go는 내장 타입으로 error 라는 interface 타입을 갖는다.
 
+```go
 type error interface {
-Error() string
+	Error() string
 }
+```
 
 ### Go루틴
 
@@ -407,37 +438,41 @@ Go루틴(goroutine)은 Go 런타임이 관리하는 Lightweight 논리적 (혹�
 
 아래 예제에서 main 함수를 보면, 먼저 say()라는 함수를 동기적으로 호출하고, 다음으로 동일한 say() 함수를 비동기적으로 3번 호출하고 있다. 첫번째 동기적 호출은 say() 함수가 완전히 끝났을 때 다음 문장으로 이동하고, 다음 3개의 go say() 비동기 호출은 별도의 Go루틴들에서 동작하면서, 메인루틴은 계속 다음 문장(여기서는 time.Sleep)을 실행한다. 여기서 goroutine들은 그 실행순서가 일정하지 않으므로 프로그램 실행시 마다 다른 출력 결과를 나타낼 수 있다.
 
+```go
 package main
 
-import (
-"fmt"
-"time"
-)
+import "time"
 
+import (
+	"fmt"
+	"time"
+	)
+	
 func say(s string) {
-for i := 0; i < 10; i++ {
-fmt.Println(s, "\*\*\*", i)
-}
+	for i := 0; i < 10; i++ {
+		fmt.Println(s, "\*\*\*", i)
+	}
 }
 
 func main() {
-// 함수를 동기적으로 실행
-say("Sync")
+	// 함수를 동기적으로 실행
+	say("Sync")
 
-    // 함수를 비동기적으로 실행
-    go say("Async1")
-    go say("Async2")
-    go say("Async3")
+	// 함수를 비동기적으로 실행
+	go say("Async1")
+	go say("Async2")
+	go say("Async3")
 
-    // 3초 대기
-    time.Sleep(time.Second * 3)
-
+	// 3초 대기
+	time.Sleep(time.Second * 3)
 }
+```
 
 ### 다중 CPU
 
 Go는 디폴트로 1개의 CPU를 사용한다. 즉, 여러 개의 Go 루틴을 만들더라도, 1개의 CPU에서 작업을 시분할하여 처리한다 (Concurrent 처리). 만약 머신이 복수개의 CPU를 가진 경우, Go 프로그램을 다중 CPU에서 병렬처리 (Parallel 처리)하게 할 수 있는데, 병렬처리를 위해서는 아래와 같이 runtime.GOMAXPROCS(CPU수) 함수를 호출하여야 한다 (여기서 CPU 수는 Logical CPU 수를 가리킨다).
 
+```go
 package main
 
 import (
@@ -445,12 +480,11 @@ import (
 )
 
 func main() {
-// 4개의 CPU 사용
-runtime.GOMAXPROCS(4)
-
+	// 4개의 CPU 사용
+	runtime.GOMAXPROCS(4)
     //...
-
 }
+```
 
 ### Go 채널
 
@@ -461,13 +495,15 @@ Go 채널은 그 채널을 통하여 데이타를 주고 받는 통로라 볼 �
 type 문은 구조체(struct), 인터페이스 등 Custom Type(혹은 User Defined Type)을 정의하기 위해 사용된다.
 type 문은 또한 함수 원형을 정의하는데 사용될 수 있다.
 
+```go
 // 원형 정의
 type calculator func(int, int) int
 
 // calculator 원형 사용
 func calc(f calculator, a int, b int) int {
-result := f(a, b)
-return result
+	result := f(a, b)
+	return result
 }
+```
 
 이렇게 함수의 원형을 정의하고 함수를 타 메서드에 전달하고 리턴받는 기능을 타 언어에서 흔히 델리게이트(Delegate)라 부른다. Go는 이러한 Delegate 기능을 제공하고 있다.
